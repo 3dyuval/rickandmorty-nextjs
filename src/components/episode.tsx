@@ -1,4 +1,5 @@
 import type { EpisodeType } from "@/utils/rickandmortyapi";
+import Character from "@/components/character"
 
 type Props = {
     episode: EpisodeType
@@ -16,6 +17,7 @@ export default function Episode ({ episode }: Props) {
           <li key={index}>{character}</li>
         ))}
       </ul>
+
     </div>
   )
 }

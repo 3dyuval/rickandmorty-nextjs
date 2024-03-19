@@ -1,6 +1,8 @@
-import { api, EpisodeType } from '@/utils/rickandmortyapi'
+import { api, CharacterType, EpisodeType } from '@/utils/rickandmortyapi'
 import Episode from "@/components/episode"
 import { redirect } from "next/navigation"
+import Character from "@/components/character"
+import axios from "axios"
 
 
 const MAX_EPISODES = 51
@@ -8,16 +10,22 @@ const MAX_EPISODES = 51
 
 export default async function Page({params, searchParams}: any) {
 
-  let episode = searchParams['episode']
+  let episodeId = searchParams['episode']
 
-  if (episode > MAX_EPISODES) {
+  if (episodeId > MAX_EPISODES) {
     redirect('404')
   }
 
-  if (!episode) {
-     episode = Math.round(Math.random() * MAX_EPISODES)
+  if (!episodeId) {
+    episodeId = Math.round(Math.random() * MAX_EPISODES)
   }
-  const episodeData = (await api.get(`/episode/${episode}`)).data as EpisodeType
 
-  return <Episode episode={episodeData}/>
+  const episode = (await api.get(`/episode/${episodeId}`)).data as EpisodeType
+  const characters = await Promise.all<{ data: CharacterType}>(episode.characters.map(axios.get))
+
+  return <><Episode episode={episode} />
+    {characters.map(({ data: character }, index) =>
+        <Character key={index} character={character}/>)
+    }
+  </>
 }
