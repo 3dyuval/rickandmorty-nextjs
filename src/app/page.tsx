@@ -1,5 +1,5 @@
 import { api, EpisodeType } from '@/utils/rickandmortyapi'
-import Episode from "@/_components/episode"
+import Episode from "@/components/episode"
 import { redirect } from "next/navigation"
 
 

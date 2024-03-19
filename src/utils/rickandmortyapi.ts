@@ -2,16 +2,19 @@ import axios from "axios"
 
 
 export const api = axios.create({
-    baseURL: process.env.API_BASE_URL,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  })
+  baseURL: process.env.API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+})
 
+api.interceptors.request.use(response => {
+  console.log('Response:', response)
+  return response
+})
 
-
-type CharacterType = {
+export type CharacterType = {
   id?: number; // The id of the character.
   name: string; // The name of the character.
   status: string; // The status of the character ('Alive', 'Dead' or 'unknown').
